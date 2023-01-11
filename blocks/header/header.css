@@ -1,0 +1,8 @@
+.header {
+  max-width: 880px;
+  min-height: 74px;
+  margin: 0 auto 40px;
+  padding-top: 45px;
+  /* box-sizing: border-box; */
+  border-bottom: 1px solid rgba(33, 33, 33, .7);
+}
