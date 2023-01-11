@@ -1,0 +1,8 @@
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  color: #fff;
+  padding-top: 22px;
+  margin-right: 240px;
+}
