@@ -1,0 +1,13 @@
+.elements {
+  max-width: 880px;
+  margin: 0 auto;
+  display: flex;
+  gap: 20px 17px;
+  flex-wrap: wrap;
+}
+
+/* @media screen and (max-width: 879) {
+  .elements {
+    margin: 0 auto;
+  }
+} */
