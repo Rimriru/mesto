@@ -8,20 +8,36 @@
   <link rel="stylesheet" href="pages/index.css">
 </head>
 <body class="page">
+  <div class="popup">
+    <div class="popup__container">
+      <form action="" method="get">
+        <h2 class="popup__heading">Редактировать профиль</h2>
+        <p>
+          <input type="text" name="name">
+        </p>
+        <p>
+          <input type="text" name="description">
+        </p>
+        <button type="submit">Сохранить</button>
+      </form>
+    </div>
+  </div>
   <header class="header">
     <div class="logo"></div>
   </header>
   <main>
     <section class="profile">
-      <img class="avatar" src="images/avatar.jpg" alt="Жак-Ив Кусто">
-      <div class="profile-info">
-        <div>
-          <h1 class="profile-info__name">Жак-Ив Кусто</h1>
-          <button class="edit-button" type="button"></button>
+      <div class="profile__content">
+        <img class="avatar" src="images/avatar.jpg" alt="Жак-Ив Кусто">
+        <div class="profile-info">
+          <div>
+            <h1 class="profile-info__name">Жак-Ив Кусто</h1>
+            <button class="edit-button" type="button"></button>
+          </div>
+          <p class="profile-info__desc">Исследователь океана</p>
         </div>
-        <p class="profile-info__desc">Исследователь океана</p>
       </div>
-      <button class="add-button" type="button"></>
+      <button class="add-button" type="button"></button>
     </section>
     <section class="elements">
         <article class="element">

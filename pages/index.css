@@ -1,12 +1,15 @@
 @import url(../vendor/normalize.css);
 @import url(../fonts/inter.css);
 @import url(../blocks/page/page.css);
+@import url(../blocks/popup/popup.css);
+@import url(../blocks/popup/__container/popup__container.css);
+@import url(../blocks/popup/__heading/popup__heading.css);
 @import url(../blocks/header/header.css);
 @import url(../blocks/logo/logo.css);
 @import url(../blocks/profile/profile.css);
+@import url(../blocks/profile/__content/profile__content.css);
 @import url(../blocks/avatar/avatar.css);
 @import url(../blocks/profile-info/profile-info.css);
-/* @import url(../blocks/profile-info/__container/profile-info__container.css); */
 @import url(../blocks/profile-info/__name/profile-info__name.css);
 @import url(../blocks/edit-button/edit-button.css);
 @import url(../blocks/profile-info/__desc/profile-info__desc.css);
