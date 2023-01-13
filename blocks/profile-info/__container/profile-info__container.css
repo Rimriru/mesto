@@ -1,0 +1,11 @@
+.profile-info__container {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+}
+
+@media screen and (max-width: 580px) {
+  .profile-info__container {
+    gap: 10px;
+  }
+}

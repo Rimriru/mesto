@@ -1,7 +1,13 @@
 .profile-info {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 5px;
   color: #fff;
   padding-top: 22px;
+}
+
+@media screen and (max-width: 580px) {
+  .profile-info {
+    padding-top: 26px;
+  }
 }
