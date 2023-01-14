@@ -1,3 +1,9 @@
 .popup__person_input_description {
   margin-bottom: 48px;
 }
+
+@media screen and (max-width: 400px) {
+  .popup__person_input_description {
+    margin-bottom: 45px;
+  }
+}
