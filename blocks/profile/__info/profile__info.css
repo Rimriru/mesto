@@ -1,4 +1,4 @@
-.profile-info {
+.profile__info {
   display: flex;
   flex-direction: column;
   gap: 5px;
@@ -7,7 +7,7 @@
 }
 
 @media screen and (max-width: 580px) {
-  .profile-info {
+  .profile__info {
     padding-top: 26px;
   }
 }
