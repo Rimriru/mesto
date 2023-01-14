@@ -1,6 +1,7 @@
 .element__image {
-  min-width: 282px;
-  max-height: 282px;
+  width: 282px;
+  height: 282px;
   border-radius: 10px 10px 0 0;
-  /* overflow: hidden; */
+  object-fit: cover;
+  object-position: center;
 }
