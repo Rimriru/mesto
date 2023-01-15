@@ -1,5 +1,3 @@
-// To open and close popup by edit button and cross
-
 let editBtn = document.querySelector('.profile__edit-button');
 let popup = document.querySelector('.popup');
 let closePopupBtn = document.querySelector('.popup__close-button');
@@ -9,6 +7,8 @@ let nameInput = document.querySelector('.popup__person_input_name');
 let profileDescription = document.querySelector('.profile__description');
 let descriptionInput = document.querySelector('.popup__person_input_description');
 let formPopupElement = document.querySelector('.popup__form'); 
+
+// To open and close popup by edit button and cross
 
 function openPopup() {
   popup.classList.add('popup_opened');
@@ -20,10 +20,10 @@ function closePopup() {
   popup.classList.remove('popup_opened');
 }
 
-// To submit the popup form and save values of name and description from user input
-
 editBtn.addEventListener('click', openPopup);
 closePopupBtn.addEventListener('click', closePopup);
+
+// To submit the popup form and save values of name and description from user input
 
 formPopupElement.addEventListener('submit', function(event) {
   event.preventDefault();
