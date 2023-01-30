@@ -1,3 +1,4 @@
+const elementsContent = document.querySelector('.elements');
 const profileSectionElement = document.querySelector('.profile');
 const editBtn = document.querySelector('.profile__edit-button');
 const addBtn = document.querySelector('profile__add-button');
@@ -34,9 +35,8 @@ const initialCards = [
 
 // Добавление карточек и содержимого на страницу
 
-function renderCards() {
+function renderInitialCards() {
   const cardTemplate = document.querySelector('#card').content;
-  const elementsContent = document.querySelector('.elements');
 
   initialCards.forEach(item => {
     const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
@@ -49,9 +49,48 @@ function renderCards() {
   });
 }
 
-renderCards();
+renderInitialCards();
 
-// Добавление попапа на страницу, его открытие и закрытие
+function renderNewCards(newCard) {
+  const cardTemplate = document.querySelector('#card').content;
+  const elementsContent = document.querySelector('.elements');
+  const cardElement = cardTemplate.querySelector('.element').cloneNode(true);
+  const likeBtnNewCard = cardElement.querySelector('.element__like-button');
+  const removeBtnNewCard = cardElement.querySelector('.element__remove-button');
+
+  cardElement.querySelector('.element__image').src = newCard.link;
+	cardElement.querySelector('.element__image').alt = newCard.name;
+	cardElement.querySelector('.element__name').textContent = newCard.name;
+  likeBtnNewCard.addEventListener('click', () => {
+    likeBtnNewCard.classList.toggle('element__like-button_active');
+  });
+  removeBtnNewCard.addEventListener('click', () => {
+    const closestCard = removeBtnNewCard.closest('.element');
+	  closestCard.remove();
+  });
+  
+  elementsContent.prepend(cardElement);
+}
+
+// Лайк и удаление карточки
+
+const likeBtn = document.querySelectorAll('.element__like-button');
+const removeBtn = document.querySelectorAll('.element__remove-button');
+
+likeBtn.forEach(like => {
+	like.addEventListener('click', () => {
+	  like.classList.toggle('element__like-button_active');
+	});
+});
+
+removeBtn.forEach(del => {
+	del.addEventListener('click', () => {
+	  const closestCard = del.closest('.element');
+	  closestCard.remove();
+	});
+});
+
+// Добавление попапов на страницу, их открытие, закрытие и сабмит
 
 profileSectionElement.addEventListener('click', function(evt) {
   if (evt.target.classList.contains('profile__edit-button')) {
@@ -76,7 +115,7 @@ function renderEditPopup() {
   popupElement.classList.add('popup_opened');
 
   popupElement.querySelector('.popup__close-button').addEventListener('click', () => {
-    popupElement.classList.remove('popup_opened');
+    popupElement.remove();
   });
 
   popupElement.querySelector('.popup__form').addEventListener('submit', function submitEditPopup(evt) {
@@ -92,6 +131,8 @@ function renderEditPopup() {
 function renderAddPopup() {
   const popupTemplate = document.querySelector('#popup').content;
   const popupElement = popupTemplate.querySelector('.popup').cloneNode(true);
+  let popupNameInput = popupElement.querySelector('.popup__person_input_name');
+  let popupDescInput = popupElement.querySelector('.popup__person_input_description');
   let newCard = {};
 
   popupElement.querySelector('.popup__heading').textContent = 'Новое\u00A0место';
@@ -106,43 +147,11 @@ function renderAddPopup() {
   
   popupElement.querySelector('.popup__form').addEventListener('submit', function submitAddPopup(evt) {
     evt.preventDefault();
-    newCard.name = `${}`
+    newCard.name = `${popupNameInput.value}`;
+    newCard.link = `${popupDescInput.value}`;
+    renderNewCards(newCard);
     popupElement.classList.remove('popup_opened');
   });
 
-
   footerElement.after(popupElement);
 }
-
-// Лайк и удаление карточки
-
-// const elementRendered = document.querySelectorAll('.element');
-const likeBtn = document.querySelectorAll('.element__like-button');
-const removeBtn = document.querySelectorAll('.element__remove-button');
-
-// elementRendered.forEach(elem => {
-//   elem.addEventListener('click', function(event) {
-//     if (event.target.classList.contains('.element__like-button')) {
-//       likeBtn.classList.toggle('element__like-button_active');
-//       console.log('it"s a like');
-//     } else if (event.target.classList.contains('.element__remove-button')) {
-//       const closestCard = removeBtn.closest('.element');
-// 	    closestCard.remove();
-//       console.log('it"s a remove button');
-//     }
-//   })
-// })
-
-
-likeBtn.forEach(like => {
-	like.addEventListener('click', () => {
-	  like.classList.toggle('element__like-button_active');
-	});
-});
-
-removeBtn.forEach(del => {
-	del.addEventListener('click', () => {
-	  const closestCard = del.closest('.element');
-	  closestCard.remove();
-	});
-});
