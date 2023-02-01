@@ -32,6 +32,31 @@
   <footer class="footer">
     <p class="footer__copyright">&copy;2023 Mesto Russia</p>
   </footer>
+  <div class="popup popup_type_profile">
+    <div class="popup__container">
+      <h2 class="popup__heading">Редактировать&nbsp;профиль</h2>
+      <form class="popup__form popup__form_type_profile" method="get" name="popup-form">
+        <input id="name" class="popup__person popup__person_input_name" type="text" name="name" placeholder="Введите имя профиля">
+        <input id="description" class="popup__person popup__person_input_description" type="text" name="description" placeholder="Введите описание профиля">
+        <button class="popup__submit-button" type="submit">Сохранить</button>
+      </form>
+      <button class="popup__close-button"></button>
+    </div>
+  </div>
+  <div class="popup popup_type_new-card">
+    <div class="popup__container">
+      <h2 class="popup__heading">Новое&nbsp;место</h2>
+      <form class="popup__form popup__form_type_new-card" method="get" name="popup-form">
+        <input id="card-name" class="popup__person popup__person_input_name" type="text" name="name" required placeholder="Название">
+        <input id="link" class="popup__person popup__person_input_description" type="text" name="description" required placeholder="Ссылка на картинку"> 
+        <button class="popup__submit-button" type="submit">Создать</button>
+      </form>
+      <button class="popup__close-button"></button>
+    </div>
+  </div>
+  <!--<div class="popup">
+    
+  </div> -->
   <template id="card">
     <article class="element">
       <img class="element__image" src="" alt="">
@@ -42,19 +67,7 @@
       <button class="element__remove-button" type="button"></button>
     </article>
   </template>
-  <template id="popup">
-    <div class="popup">
-      <div class="popup__container">
-        <h2 class="popup__heading"></h2>
-        <form class="popup__form" method="get" name="popup-form">
-          <input class="popup__person popup__person_input_name" type="text" name="name" placeholder="">
-          <input class="popup__person popup__person_input_description" type="text" name="description" placeholder="">
-          <button class="popup__submit-button" type="submit"></button>
-        </form>
-        <button class="popup__close-button"></button>
-      </div>
-    </div>
-  </template>
-  <script src="./scripts/index.js"></script>
+  <script src="./scripts/initial-cards.js"></script>
+  <script src="./scripts/old-index-copy.js"></script>
 </body>
 </html>
