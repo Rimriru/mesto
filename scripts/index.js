@@ -1,17 +1,17 @@
 const editBtn = document.querySelector('.profile__edit-button');
 const addBtn = document.querySelector('.profile__add-button');
-const closePopupBtn = document.querySelectorAll('.popup__close-button');
-let editPopup = document.querySelector('.popup_type_profile');
-let addPopup = document.querySelector('.popup_type_new-card');
+const closePopupBtns = document.querySelectorAll('.popup__close-button');
+const editPopup = document.querySelector('.popup_type_profile');
+const addPopup = document.querySelector('.popup_type_new-card');
 
-let cardImagePopup = document.querySelector('.popup_type_card-image');
+const cardImagePopup = document.querySelector('.popup_type_card-image');
 let imagePopupElement = document.querySelector('.popup__image');
 let imageCaptionPopupElement = document.querySelector('.popup__image-caption');
 
 let profileName = document.querySelector('.profile__name');
 let profileDescription = document.querySelector('.profile__description');
 
-const formPopupElement = document.querySelectorAll('.popup__form'); 
+const formPopupElements = document.querySelectorAll('.popup__form'); 
 let nameInput = document.querySelector('#name');
 let descriptionInput = document.querySelector('#description');
 let cardNameInput = document.querySelector('#card-name');
@@ -114,13 +114,13 @@ addBtn.addEventListener('click', () => {
   openPopup(addPopup);
 });
 
-closePopupBtn.forEach(closeBtn => {
+closePopupBtns.forEach(closeBtn => {
   closeBtn.addEventListener('click', (evt) => {
     closePopup(closeBtn.closest('.popup'));
   })
 })
 
-formPopupElement.forEach(form => {
+formPopupElements.forEach(form => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
     if (form.classList.contains('popup__form_type_profile')) {
@@ -132,7 +132,7 @@ formPopupElement.forEach(form => {
       newCard.link = linkInput.value;
       renderNewCards(newCard);
       closePopup(addPopup);
-      formPopupElement[1].reset();
+      formPopupElements[1].reset();
     }
   })
 })
