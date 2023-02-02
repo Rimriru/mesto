@@ -103,7 +103,7 @@ formProfilePopup.addEventListener('submit', (evt) => {
 
 formNewCardPopup.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  let newCard = {};
+  const newCard = {};
 
   newCard.name = cardNameInput.value;
   newCard.link = linkInput.value;
