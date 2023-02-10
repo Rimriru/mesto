@@ -72,27 +72,64 @@ function removeCardHandler(removeButton) {
 
 function openPopup(popupType) {
   popupType.classList.add('popup_opened');
+  
 }
 
 function closePopup(popupType) {
   popupType.classList.remove('popup_opened');
 }
 
-editBtn.addEventListener('click', function() {
+function escKeyHandler(evt) {
+  if (evt.key === "Escape") {
+    closePopup(evt.target);
+    evt.target.removeEventListener('keydown', escKeyHandler);
+  }
+}
+
+function closePopupByOverlayClick (evt) {
+  if (evt.currentTarget === evt.target) {
+    closePopup(evt.target);
+  }
+}
+
+function enterKeyHandler(event, formType) {
+  if (event.key === 'Enter') {
+    formType.submit();
+  }
+}
+
+editBtn.addEventListener('click', () => {
   nameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
   openPopup(editPopup);
+
+  editPopup.addEventListener('keydown', escKeyHandler);
+  editPopup.addEventListener('click', closePopupByOverlayClick);
+  nameInput.addEventListener('keydown', (evt) => {
+    enterKeyHandler(evt, formProfilePopup);
+  });
+  descriptionInput.addEventListener('keydown', (evt) => {
+    enterKeyHandler(evt, formProfilePopup);
+  });
 });
 
 addBtn.addEventListener('click', () => {
   openPopup(addPopup);
+  addPopup.addEventListener('keydown', escKeyHandler);
+  addPopup.addEventListener('click', closePopupByOverlayClick);
+  cardNameInput.addEventListener('keydown', (evt) => {
+    enterKeyHandler(evt, formNewCardPopup);
+  });
+  linkInput.addEventListener('keydown', (evt) => {
+    enterKeyHandler(evt, formNewCardPopup);
+  });
 });
 
 buttonsClosePopup.forEach(closeBtn => {
-  closeBtn.addEventListener('click', (evt) => {
+  closeBtn.addEventListener('click', () => {
     closePopup(closeBtn.closest('.popup'));
   })
-})
+});
 
 formProfilePopup.addEventListener('submit', (evt) => {
   evt.preventDefault();
