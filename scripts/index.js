@@ -78,6 +78,7 @@ function openPopup(popupType) {
 
 function closePopup(popupType) {
   popupType.classList.remove('popup_opened');
+  popupType.removeEventListener('click', closePopupByOverlayClick);
   document.removeEventListener('keydown', escKeyHandler);
 }
 
@@ -109,7 +110,6 @@ buttonsClosePopup.forEach(closeBtn => {
     closePopup(closeBtn.closest('.popup'));
   })
 });
-
 
 formProfilePopup.addEventListener('submit', (evt) => {
   evt.preventDefault();
