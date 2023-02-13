@@ -28,8 +28,6 @@
 @import url(../blocks/popup/__container/popup__container.css);
 @import url(../blocks/popup/__heading/popup__heading.css);
 @import url(../blocks/popup/__person/popup__person.css);
-@import url(../blocks/popup/__person/_input/popup__person_input_name.css);
-@import url(../blocks/popup/__person/_input/popup__pesron_input_description.css);
 @import url(../blocks/popup/__person/_type/popup__person_type_error.css);
 @import url(../blocks/popup/__error/popup__error.css);
 @import url(../blocks/popup/__error/_visible/popup__error_visible.css);

@@ -21,7 +21,7 @@ const linkInput = document.querySelector('#link');
 
 const elementsContent = document.querySelector('.elements');
 
-// Добавление карточек и содержимого на страницу
+// Добавление карточек и содержимого на страницу, открытие попапа картинки
 
 function openPopupImage(name, link) {
   imagePopupElement.src = link;
@@ -72,18 +72,13 @@ function removeCardHandler(removeButton) {
 
 function openPopup(popupType) {
   popupType.classList.add('popup_opened');
-  
+  popupType.addEventListener('click', closePopupByOverlayClick);
+  document.addEventListener('keydown', escKeyHandler)
 }
 
 function closePopup(popupType) {
   popupType.classList.remove('popup_opened');
-}
-
-function escKeyHandler(evt) {
-  if (evt.key === "Escape") {
-    closePopup(evt.target);
-    evt.target.removeEventListener('keydown', escKeyHandler);
-  }
+  document.removeEventListener('keydown', escKeyHandler);
 }
 
 function closePopupByOverlayClick (evt) {
@@ -92,9 +87,10 @@ function closePopupByOverlayClick (evt) {
   }
 }
 
-function enterKeyHandler(event, formType) {
-  if (event.key === 'Enter') {
-    formType.submit();
+function escKeyHandler(evt) {
+  if (evt.key === "Escape") {
+    const popupOpened = document.querySelector('.popup_opened');
+    closePopup(popupOpened);
   }
 }
 
@@ -102,27 +98,10 @@ editBtn.addEventListener('click', () => {
   nameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
   openPopup(editPopup);
-
-  editPopup.addEventListener('keydown', escKeyHandler);
-  editPopup.addEventListener('click', closePopupByOverlayClick);
-  nameInput.addEventListener('keydown', (evt) => {
-    enterKeyHandler(evt, formProfilePopup);
-  });
-  descriptionInput.addEventListener('keydown', (evt) => {
-    enterKeyHandler(evt, formProfilePopup);
-  });
 });
 
 addBtn.addEventListener('click', () => {
   openPopup(addPopup);
-  addPopup.addEventListener('keydown', escKeyHandler);
-  addPopup.addEventListener('click', closePopupByOverlayClick);
-  cardNameInput.addEventListener('keydown', (evt) => {
-    enterKeyHandler(evt, formNewCardPopup);
-  });
-  linkInput.addEventListener('keydown', (evt) => {
-    enterKeyHandler(evt, formNewCardPopup);
-  });
 });
 
 buttonsClosePopup.forEach(closeBtn => {
@@ -130,6 +109,7 @@ buttonsClosePopup.forEach(closeBtn => {
     closePopup(closeBtn.closest('.popup'));
   })
 });
+
 
 formProfilePopup.addEventListener('submit', (evt) => {
   evt.preventDefault();
@@ -147,4 +127,6 @@ formNewCardPopup.addEventListener('submit', (evt) => {
   elementsContent.prepend(createCard(newCard.name, newCard.link));
   closePopup(addPopup);
   formNewCardPopup.reset();
+  evt.submitter.classList.add('popup__submit-button_disabled');
+  evt.submitter.disabled = true;
 });
