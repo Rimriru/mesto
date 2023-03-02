@@ -1,10 +1,13 @@
+import { Card } from "./Card.js";
+
+export {cardImagePopup, imagePopupElement, imageCaptionPopupElement, openPopup};
+
 const editBtn = document.querySelector('.profile__edit-button');
 const addBtn = document.querySelector('.profile__add-button');
 const buttonsClosePopup = document.querySelectorAll('.popup__close-button');
 const editPopup = document.querySelector('.popup_type_profile');
 const addPopup = document.querySelector('.popup_type_new-card');
 
-const cardTemplate = document.querySelector('#card');
 const cardImagePopup = document.querySelector('.popup_type_card-image');
 const imagePopupElement = document.querySelector('.popup__image');
 const imageCaptionPopupElement = document.querySelector('.popup__image-caption');
@@ -20,53 +23,6 @@ const cardNameInput = document.querySelector('#card-name');
 const linkInput = document.querySelector('#link');
 
 const elementsContent = document.querySelector('.elements');
-
-// Добавление карточек и содержимого на страницу, открытие попапа картинки
-
-function openPopupImage(name, link) {
-  imagePopupElement.src = link;
-  imagePopupElement.alt = name;
-  imageCaptionPopupElement.textContent = name;
-  openPopup(cardImagePopup);
-}
-
-function createCard(name, link) {
-  const card = cardTemplate.content.querySelector('.element').cloneNode(true);
-  const cardImage = card.querySelector('.element__image');
-  const cardName = card.querySelector('.element__name');
-  const likeBtn = card.querySelector('.element__like-button');
-  const removeBtn = card.querySelector('.element__remove-button');
-
-  cardImage.src = link;
-	cardImage.alt = name;
-	cardName.textContent = name;
-
-  cardImage.addEventListener('click', () => {
-    openPopupImage(cardName.textContent, cardImage.src);
-  });
-  likeBtn.addEventListener('click', () => {
-    likeCardHandler(likeBtn);
-  });
-  removeBtn.addEventListener('click', () => {
-    removeCardHandler(removeBtn);
-  });
-
-  return card;
-}
-
-initialCards.forEach(initCard => {
-  elementsContent.append(createCard(initCard.name, initCard.link));
-});
-
-// Лайк и удаление карточки
-
-function likeCardHandler(likeButton) {
-  likeButton.classList.toggle('element__like-button_active');
-}
-
-function removeCardHandler(removeButton) {
-	removeButton.closest('.element').remove();
-}
 
 // Добавление попапов на страницу, их открытие, закрытие и сабмит
 
@@ -124,7 +80,8 @@ formNewCardPopup.addEventListener('submit', (evt) => {
 
   newCard.name = cardNameInput.value;
   newCard.link = linkInput.value;
-  elementsContent.prepend(createCard(newCard.name, newCard.link));
+  const card = new Card(newCard, '#card');
+  elementsContent.prepend(card.createCard());
   closePopup(addPopup);
   formNewCardPopup.reset();
   evt.submitter.classList.add('popup__submit-button_disabled');
