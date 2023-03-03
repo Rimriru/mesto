@@ -1,3 +1,4 @@
+import { initialCards } from "./initial-cards.js";
 import { Card } from "./Card.js";
 
 export {cardImagePopup, imagePopupElement, imageCaptionPopupElement, openPopup};
@@ -86,4 +87,10 @@ formNewCardPopup.addEventListener('submit', (evt) => {
   formNewCardPopup.reset();
   evt.submitter.classList.add('popup__submit-button_disabled');
   evt.submitter.disabled = true;
+});
+
+initialCards.forEach(item => {
+  const card = new Card(item, '#card');
+  const cardElement = card.createCard();
+  elementsContent.append(cardElement);
 });
