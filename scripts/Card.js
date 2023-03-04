@@ -1,5 +1,3 @@
-// import { cardImagePopup, imagePopupElement, imageCaptionPopupElement, openPopup } from './index.js';
-
 export {Card};
 
 class Card {
