@@ -1,7 +1,6 @@
 import { initialCards } from "./initial-cards.js";
 import { Card } from "./Card.js";
-
-export {cardImagePopup, imagePopupElement, imageCaptionPopupElement, openPopup};
+import {FormValidator, formElementsClasses} from "./FormValidator.js";
 
 const editBtn = document.querySelector('.profile__edit-button');
 const addBtn = document.querySelector('.profile__add-button');
@@ -25,12 +24,27 @@ const linkInput = document.querySelector('#link');
 
 const elementsContent = document.querySelector('.elements');
 
+// Создание экземпляров форм, проверка на валидность
+
+const formProfilePopupValidation = new FormValidator(formElementsClasses, formProfilePopup);
+formProfilePopupValidation.enableValidation();
+
+const formNewCardPopupValidation = new FormValidator(formElementsClasses, formNewCardPopup);
+formNewCardPopupValidation.enableValidation();
+
 // Добавление попапов на страницу, их открытие, закрытие и сабмит
 
 function openPopup(popupType) {
   popupType.classList.add('popup_opened');
   popupType.addEventListener('click', closePopupByOverlayClick);
   document.addEventListener('keydown', escKeyHandler)
+}
+
+const openImagePopup = function() {
+  imagePopupElement.src = this._link;
+  imagePopupElement.alt = this._name;
+  imageCaptionPopupElement.textContent = this._name;
+  openPopup(cardImagePopup);
 }
 
 function closePopup(popupType) {
@@ -81,16 +95,15 @@ formNewCardPopup.addEventListener('submit', (evt) => {
 
   newCard.name = cardNameInput.value;
   newCard.link = linkInput.value;
-  const card = new Card(newCard, '#card');
+  const card = new Card(newCard, '#card', openImagePopup);
+  formNewCardPopupValidation.disableSubmitButton();
   elementsContent.prepend(card.createCard());
   closePopup(addPopup);
   formNewCardPopup.reset();
-  evt.submitter.classList.add('popup__submit-button_disabled');
-  evt.submitter.disabled = true;
 });
 
 initialCards.forEach(item => {
-  const card = new Card(item, '#card');
+  const card = new Card(item, '#card', openImagePopup);
   const cardElement = card.createCard();
   elementsContent.append(cardElement);
 });

@@ -1,24 +1,18 @@
-import { cardImagePopup, imagePopupElement, imageCaptionPopupElement, openPopup } from './index.js';
+// import { cardImagePopup, imagePopupElement, imageCaptionPopupElement, openPopup } from './index.js';
 
 export {Card};
 
 class Card {
-  constructor(cardInfo, templateSelector) {
+  constructor(cardInfo, templateSelector, openPopupHandler) {
     this._name = cardInfo.name;
     this._link = cardInfo.link;
     this._templateSelector = templateSelector;
+    this._openPopupHandler = openPopupHandler;
   }
 
   _getTemplate() {
     const cardElement = document.querySelector(this._templateSelector).content.querySelector('.element').cloneNode(true);
     return cardElement;
-  }
-
-  _openPopupHandler() {
-    imagePopupElement.src = this._link;
-    imagePopupElement.alt = this._name;
-    imageCaptionPopupElement.textContent = this._name;
-    openPopup(cardImagePopup);
   }
 
   _likeCardHandler(evt) {
