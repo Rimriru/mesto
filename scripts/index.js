@@ -47,8 +47,8 @@ const openImagePopup = function() {
   openPopup(cardImagePopup);
 }
 
-function resetFormPopup(popupType) {
-  if(popupType === addPopup) {
+function resetFormPopup(evt) {
+  if(evt.target === addBtn) {
     formNewCardPopup.reset();
     formNewCardPopupValidation.resetInputError();
   } else {
@@ -60,7 +60,6 @@ function closePopup(popupType) {
   popupType.classList.remove('popup_opened');
   popupType.removeEventListener('click', closePopupByOverlayClick);
   document.removeEventListener('keydown', escKeyHandler);
-  resetFormPopup(popupType);
 }
 
 function closePopupByOverlayClick (evt) {
@@ -81,13 +80,15 @@ function createCard(cardInfo, templateSelector, openPopupHandler) {
   return card;
 }
 
-editBtn.addEventListener('click', () => {
+editBtn.addEventListener('click', (evt) => {
   nameInput.value = profileName.textContent;
   descriptionInput.value = profileDescription.textContent;
+  resetFormPopup(evt);
   openPopup(editPopup);
 });
 
-addBtn.addEventListener('click', () => {
+addBtn.addEventListener('click', (evt) => {
+  resetFormPopup(evt);
   openPopup(addPopup);
 });
 
