@@ -1,4 +1,4 @@
-export {FormValidator, formElementsClasses};
+export { FormValidator, formElementsClasses };
 
 const formElementsClasses = {
   formSelector: '.popup__form',
@@ -21,21 +21,25 @@ class FormValidator {
   }
 
   resetInputError() {
-    const formElement = this._formElement;
-    const inputName = formElement.elements.name;
-    const inputDescription = formElement.elements.description;
-    const inputNameErrorMessage = formElement.querySelector(`.${inputName.id}-error`);
-    const inputDescriptionErrorMessage = formElement.querySelector(`.${inputDescription.id}-error`);
+    // const formElement = this._formElement;
+    // const inputName = formElement.elements.name;
+    // const inputDescription = formElement.elements.description;
+    // const inputNameErrorMessage = formElement.querySelector(`.${inputName.id}-error`);
+    // const inputDescriptionErrorMessage = formElement.querySelector(`.${inputDescription.id}-error`);
 
-    inputName.classList.remove(this._inputErrorClass);
-    inputDescription.classList.remove(this._inputErrorClass);
-    inputNameErrorMessage.textContent = '';
-    inputNameErrorMessage.classList.remove(this._errorClassActive);
-    inputDescriptionErrorMessage.textContent = '';
-    inputDescriptionErrorMessage.classList.remove(this._errorClassActive);
+    // inputName.classList.remove(this._inputErrorClass);
+    // inputDescription.classList.remove(this._inputErrorClass);
+    // inputNameErrorMessage.textContent = '';
+    // inputNameErrorMessage.classList.remove(this._errorClassActive);
+    // inputDescriptionErrorMessage.textContent = '';
+    // inputDescriptionErrorMessage.classList.remove(this._errorClassActive);
+    this._inputList.forEach(input => {
+      this._hideInputError(input);
+    });
   }
 
-  _showInputError() {
+  _showInputError(inputElement) {
+    this._input = inputElement;
     this._errorMessage = this._formElement.querySelector(`.${this._input.id}-error`);
 
     this._input.classList.add(this._inputErrorClass);
@@ -43,7 +47,8 @@ class FormValidator {
     this._errorMessage.classList.add(this._errorClassActive);
   }
 
-  _hideInputError() {
+  _hideInputError(inputElement) {
+    this._input = inputElement;
     this._errorMessage = this._formElement.querySelector(`.${this._input.id}-error`);
 
     this._input.classList.remove(this._inputErrorClass);
@@ -52,8 +57,7 @@ class FormValidator {
   }
 
   _checkInputValidity(inputElement) {
-    this._input = inputElement;
-    return (!this._input.validity.valid) ? this._showInputError() : this._hideInputError();
+    return (!inputElement.validity.valid) ? this._showInputError(inputElement) : this._hideInputError(inputElement);
   }
 
   _hasInvalidInput() {
