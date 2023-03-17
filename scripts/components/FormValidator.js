@@ -21,18 +21,6 @@ class FormValidator {
   }
 
   resetInputError() {
-    // const formElement = this._formElement;
-    // const inputName = formElement.elements.name;
-    // const inputDescription = formElement.elements.description;
-    // const inputNameErrorMessage = formElement.querySelector(`.${inputName.id}-error`);
-    // const inputDescriptionErrorMessage = formElement.querySelector(`.${inputDescription.id}-error`);
-
-    // inputName.classList.remove(this._inputErrorClass);
-    // inputDescription.classList.remove(this._inputErrorClass);
-    // inputNameErrorMessage.textContent = '';
-    // inputNameErrorMessage.classList.remove(this._errorClassActive);
-    // inputDescriptionErrorMessage.textContent = '';
-    // inputDescriptionErrorMessage.classList.remove(this._errorClassActive);
     this._inputList.forEach(input => {
       this._hideInputError(input);
     });

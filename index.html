@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mesto</title>
-  <link rel="stylesheet" href="pages/index.css">
+  <link rel="stylesheet" href="pages/index.css"> <!--Убрать при подключении webpack, импортировать главный css файл в index.js в src(import './styles/index.css')-->
 </head>
 <body class="page">
   <header class="header">
@@ -99,9 +99,11 @@
       <button class="element__remove-button" type="button"></button>
     </article>
   </template>
-  <script type="module" src="./scripts/initial-cards.js"></script>
-  <script type="module" src="./scripts/index.js"></script>
-  <script type="module" src="./scripts/Card.js"></script>
-  <script type="module" src="./scripts/FormValidator.js"></script>
+  <script type="module" src="./scripts/utils/constants.js"></script>
+  <script type="module" src="./scripts/utils/initial-cards.js"></script>
+  <script type="module" src="./scripts/pages/index.js"></script>
+  <script type="module" src="./scripts/components/Section.js"></script>
+  <script type="module" src="./scripts/components/Card.js"></script>
+  <script type="module" src="./scripts/components/FormValidator.js"></script>
 </body>
 </html>

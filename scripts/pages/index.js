@@ -1,28 +1,26 @@
-import { initialCards } from "./initial-cards.js";
-import { Card } from "./Card.js";
-import { FormValidator, formElementsClasses } from "./FormValidator.js";
-
-const editBtn = document.querySelector('.profile__edit-button');
-const addBtn = document.querySelector('.profile__add-button');
-const buttonsClosePopup = document.querySelectorAll('.popup__close-button');
-const editPopup = document.querySelector('.popup_type_profile');
-const addPopup = document.querySelector('.popup_type_new-card');
-
-const cardImagePopup = document.querySelector('.popup_type_card-image');
-const imagePopupElement = document.querySelector('.popup__image');
-const imageCaptionPopupElement = document.querySelector('.popup__image-caption');
-
-const profileName = document.querySelector('.profile__name');
-const profileDescription = document.querySelector('.profile__description');
-
-const formProfilePopup = document.querySelector('.popup__form_type_profile');
-const formNewCardPopup = document.querySelector('.popup__form_type_new-card');
-const nameInput = document.querySelector('#name');
-const descriptionInput = document.querySelector('#description');
-const cardNameInput = document.querySelector('#card-name');
-const linkInput = document.querySelector('#link');
-
-const elementsContent = document.querySelector('.elements');
+import {
+  editBtn,
+  addBtn,
+  buttonsClosePopup,
+  editPopup,
+  addPopup,
+  cardImagePopup,
+  imagePopupElement,
+  imageCaptionPopupElement,
+  profileName,
+  profileDescription,
+  formProfilePopup,
+  formNewCardPopup,
+  nameInput,
+  descriptionInput,
+  cardNameInput,
+  linkInput,
+  elementsContent,
+} from '../utils/constants.js';
+import { initialCards } from '../utils/initial-cards.js';
+import Section from '../components/Section.js';
+import Card from '../components/Card.js';
+import { FormValidator, formElementsClasses } from '../components/FormValidator.js';
 
 // Создание экземпляров форм, проверка на валидность
 
