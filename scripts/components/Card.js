@@ -1,7 +1,7 @@
 export default class Card {
-  constructor(cardInfo, templateSelector, handleCardClick) {
-    this._name = cardInfo.name;
-    this._link = cardInfo.link;
+  constructor({name, link}, templateSelector, handleCardClick) {
+    this._name = name;
+    this._link = link;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
   }
@@ -21,7 +21,7 @@ export default class Card {
 
   _setEventListeners() {
     this._imageCard.addEventListener('click', () => {
-      this._handleCardClick();
+      this._handleCardClick({name: this._name, link: this._link});
     });
     this._element.querySelector('.element__like-button').addEventListener('click', (evt) => {
       this._likeCardHandler(evt);
