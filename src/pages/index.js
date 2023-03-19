@@ -63,59 +63,59 @@ function resetFormPopup(evt) {
 
 const profileInfo = new UserInfo({nameSelector: profileName, descriptionSelector: profileDescription});
 
+// создание экземпляров попапов
+
+
+
+
 // обработчик клика по карточке -> открытие попапа картинки
 
 const handleCardClick = ({name, link}) => {
-  const popupImage = new PopupWithImage(cardImagePopupSelector);
   popupImage.open({name, link});
 }
-
-// получение наполненной карточки
 
 const createCard = (item) => {
   return new Card(item, cardTemplateSelector, handleCardClick).createCard();
 }
 
+const cardRenderData = {
+  data: initialCards,
+  renderer: createCard
+};
+
+const cardRenderer = new Section(cardRenderData, elementsSelector);
+cardRenderer.renderItems();
+
+const popupImage = new PopupWithImage(cardImagePopupSelector);
+popupImage.setEventListeners();
+
+const submitProfileFormHandler = (inputValues) => {
+  profileInfo.setUserInfo(inputValues);
+}
+
+const popupFormProfile = new PopupWithForm(editPopupSelector, {
+  submitFormHandler: submitProfileFormHandler
+});
+popupFormProfile.setEventListeners();
+
+const submitNewCardFormHandler = (inputValues) => {
+  cardRenderer.addItem(true, createCard(inputValues));
+}
+
+const popupFormNewCard = new PopupWithForm(addPopupSelector, {
+  submitFormHandler: submitNewCardFormHandler
+});
+popupFormNewCard.setEventListeners();
+
 // открытие попапов редактирования профиля и создания новой карточки
 
 editBtn.addEventListener('click', (evt) => {
-  const popupFormProfile = new PopupWithForm(editPopupSelector, {
-    submitFormHandler: (evt) => {
-      evt.preventDefault();
-      profileInfo.setUserInfo(popupFormProfile._getInputValues());
-      popupFormProfile.close();
-    }
-  });
-  popupFormProfile.open(profileInfo.getUserInfo());
+  popupFormProfile.setInputValues(profileInfo.getUserInfo());
+  popupFormProfile.open();
   resetFormPopup(evt);
 });
 
 addBtn.addEventListener('click', (evt) => {
   resetFormPopup(evt);
-  const popupFormNewCard = new PopupWithForm(addPopupSelector, {
-    submitFormHandler: (evt) => {
-      evt.preventDefault();
-      const inputValues = popupFormNewCard._getInputValues();
-      const newCardRender = new Section({
-        data: [inputValues],
-        renderer: () => {
-          const card = createCard(inputValues);
-          newCardRender.addItem(true, card);
-        }
-      }, elementsSelector);
-      newCardRender.renderItems();
-      popupFormNewCard.close();
-    }
-  });
   popupFormNewCard.open();
 });
-
-const initialCardsRender = new Section({
-  data: initialCards,
-  renderer: (item) => {
-    const card = createCard(item);
-    initialCardsRender.addItem(false, card);
-  },
-}, elementsSelector);
-
-initialCardsRender.renderItems();
