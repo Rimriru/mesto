@@ -10,13 +10,13 @@ const formElementsClasses = {
 };
 
 class FormValidator {
-  constructor(selectorsList, formElement) {
-    this._formSelector = selectorsList.formSelector;
-    this._inputSelector = selectorsList.inputSelector;
-    this._submitButtonSelector = selectorsList.submitButtonSelector;
-    this._inactiveButtonClass = selectorsList.inactiveButtonClass;
-    this._inputErrorClass = selectorsList.inputErrorClass;
-    this._errorClassActive = selectorsList.errorClassActive;
+  constructor({formSelector, inputSelector, submitButtonSelector, inactiveButtonClass, inputErrorClass, errorClassActive}, formElement) {
+    this._formSelector = formSelector;
+    this._inputSelector = inputSelector;
+    this._submitButtonSelector = submitButtonSelector;
+    this._inactiveButtonClass = inactiveButtonClass;
+    this._inputErrorClass = inputErrorClass;
+    this._errorClassActive = errorClassActive;
     this._formElement = formElement;
   }
 

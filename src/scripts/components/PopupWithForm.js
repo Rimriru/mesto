@@ -10,11 +10,14 @@ export default class PopupWithForm extends Popup {
     this._submitFormHandler = this._submitFormHandler.bind(this);
   }
 
-  open({name, description}) {
+  open(parameter) {
     super.open();
-    if(this._popupSelector === '.popup_type_profile') {
-      this._form.querySelector('#name').value = name;
-      this._form.querySelector('#description').value = description;
+    if(parameter !== undefined) {
+      const { name, description } = parameter;
+      if(this._popupSelector === '.popup_type_profile') {
+        this._form.querySelector('#name').value = name;
+        this._form.querySelector('#description').value = description;
+      }
     }
   }
 
@@ -23,7 +26,6 @@ export default class PopupWithForm extends Popup {
     this._inputs.forEach(input => {
       inputValues[input.name] = input.value;
     });
-    console.log(inputValues);
     return inputValues;
   }
 
