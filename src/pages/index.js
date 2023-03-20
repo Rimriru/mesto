@@ -42,7 +42,7 @@ import UserInfo from '../scripts/components/UserInfo.js';
 import Card from '../scripts/components/Card.js';
 import { FormValidator, formElementsClasses } from '../scripts/components/FormValidator.js';
 
-// Создание экземпляров форм, проверка на валидность, очистка ошибок
+// cоздание экземпляров форм, проверка на валидность, очистка ошибок
 
 const formProfilePopupValidation = new FormValidator(formElementsClasses, formProfilePopup);
 formProfilePopupValidation.enableValidation();
@@ -63,12 +63,7 @@ function resetFormPopup(evt) {
 
 const profileInfo = new UserInfo({nameSelector: profileName, descriptionSelector: profileDescription});
 
-// создание экземпляров попапов
-
-
-
-
-// обработчик клика по карточке -> открытие попапа картинки
+// обработчик клика по карточке, создание карточки, добавление на на страницу
 
 const handleCardClick = ({name, link}) => {
   popupImage.open({name, link});
@@ -86,11 +81,14 @@ const cardRenderData = {
 const cardRenderer = new Section(cardRenderData, elementsSelector);
 cardRenderer.renderItems();
 
+// создание экземпляров попапов, навешивание слушателей
+
 const popupImage = new PopupWithImage(cardImagePopupSelector);
 popupImage.setEventListeners();
 
 const submitProfileFormHandler = (inputValues) => {
   profileInfo.setUserInfo(inputValues);
+  formProfilePopupValidation.disableSubmitButton();
 }
 
 const popupFormProfile = new PopupWithForm(editPopupSelector, {
@@ -99,7 +97,8 @@ const popupFormProfile = new PopupWithForm(editPopupSelector, {
 popupFormProfile.setEventListeners();
 
 const submitNewCardFormHandler = (inputValues) => {
-  cardRenderer.addItem(true, createCard(inputValues));
+  cardRenderer.addItem(createCard(inputValues));
+  formNewCardPopupValidation.disableSubmitButton();
 }
 
 const popupFormNewCard = new PopupWithForm(addPopupSelector, {
