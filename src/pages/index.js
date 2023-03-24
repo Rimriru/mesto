@@ -1,5 +1,6 @@
 const logo = new URL('../images/logo/logo-mesto.svg', import.meta.url);
 const avatar = new URL('../images/avatar.jpg', import.meta.url);
+const avatarChangeIcon = new URL('../images/avatar-icon.svg', import.meta.url);
 const editBtnImage = new URL('../images/edit-button.svg', import.meta.url);
 const addBtnImage = new URL('../images/add-button.svg', import.meta.url);
 const addBtnImageLarge = new URL('../images/add-button-large.svg', import.meta.url);
@@ -11,6 +12,7 @@ const removeButtonImage = new URL('../images/remove-card-button.svg', import.met
 const images = [
   { name: 'logo', image: logo },
   { name: 'avatar', image: avatar },
+  { name: 'avatarChangeIcon', image: avatarChangeIcon },
   { name: 'editBtn', image: editBtnImage },
   { name: 'addBtn', image: addBtnImage },
   { name: 'addBtnLarge', image: addBtnImageLarge },
@@ -22,11 +24,13 @@ const images = [
 
 import './index.css'
 import {
+  changeAvatarBtn,
   editBtn,
   addBtn,
   editPopupSelector,
   addPopupSelector,
   cardImagePopupSelector,
+  updateAvatarPopupSelector,
   profileName,
   profileDescription,
   formProfilePopup,
