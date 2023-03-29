@@ -1,10 +1,12 @@
 export default class Card {
-  constructor({name, link}, templateSelector, handleCardClick, id) {
+  constructor({name, link, _id, likes}, templateSelector, handleCardClick, openConfirmPopupHandler) {
     this._name = name;
     this._link = link;
     this._templateSelector = templateSelector;
     this._handleCardClick = handleCardClick;
-    this._id = id;
+    this._openConfirmPopupHandler = openConfirmPopupHandler;
+    this._id = _id;
+    this._likes = likes;
   }
 
   _getTemplate() {
@@ -16,10 +18,6 @@ export default class Card {
     evt.currentTarget.classList.toggle('element__like-button_active');
   }
 
-  _removeCardHandler(evt) {
-    evt.currentTarget.closest('.element').remove();
-  }
-
   _setEventListeners() {
     this._imageCard.addEventListener('click', () => {
       this._handleCardClick({name: this._name, link: this._link});
@@ -27,8 +25,8 @@ export default class Card {
     this._element.querySelector('.element__like-button').addEventListener('click', (evt) => {
       this._likeCardHandler(evt);
     })
-    this._element.querySelector('.element__remove-button').addEventListener('click', (evt) => {
-      this._removeCardHandler(evt);
+    this._element.querySelector('.element__remove-button').addEventListener('click', () => {
+      this._openConfirmPopupHandler();
     });
   }
 
@@ -39,6 +37,7 @@ export default class Card {
     this._imageCard = this._element.querySelector('.element__image');
     this._imageCard.src = this._link;
     this._imageCard.alt = this._name;
+    this._element.querySelector('.element__likes-counter').textContent = this._likes.length;
 
     this._setEventListeners();
 

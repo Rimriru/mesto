@@ -31,17 +31,20 @@ import {
   addPopupSelector,
   cardImagePopupSelector,
   updateAvatarPopupSelector,
-  profileName,
-  profileDescription,
+  confirmPopupSelector,
+  profileAvatarImage,
+  profileNameSelector,
+  profileDescriptionSelector,
   formProfilePopup,
   formNewCardPopup,
   cardTemplateSelector,
   elementsSelector,
 } from '../utils/constants.js';
-import { initialCards } from '../utils/initial-cards.js';
+import Api from '../components/Api.js';
 import Section from '../components/Section.js';
 import PopupWithImage from '../components/PopupWithImage.js';
 import PopupWithForm from '../components/PopupWithForm.js';
+import PopupWithConfirmation from '../components/PopupWithConfirmation.js';
 import UserInfo from '../components/UserInfo.js';
 import Card from '../components/Card.js';
 import { FormValidator, formElementsClasses } from '../components/FormValidator.js';
@@ -65,7 +68,28 @@ function resetFormPopup(evt) {
 
 // сбор данных профиля пользователя
 
-const profileInfo = new UserInfo({nameSelector: profileName, descriptionSelector: profileDescription});
+const profileInfo = new UserInfo({nameSelector: profileNameSelector, descriptionSelector: profileDescriptionSelector});
+
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co',
+  headers: {
+    authorization: '1b47af07-4c33-4bad-9262-4cd7024f33a0',
+    'Content-Type': 'application/json'
+  }
+});
+
+api.getUserInfo().then(res => {
+  profileInfo.setUserInfo(res);
+  profileAvatarImage.src = res.avatar;
+});
+
+api.getInitialCards().then(cardsArray => {
+  cardRenderer.renderItems(cardsArray);
+});
+
+// api.likeCard({isLiked: true}).then(res => {
+//   console.log(res);
+// });
 
 // обработчик клика по карточке, создание карточки, добавление на на страницу
 
@@ -77,13 +101,7 @@ const createCard = (item) => {
   return new Card(item, cardTemplateSelector, handleCardClick).createCard();
 }
 
-const cardRenderData = {
-  data: initialCards,
-  renderer: createCard
-};
-
-const cardRenderer = new Section(cardRenderData, elementsSelector);
-cardRenderer.renderItems();
+const cardRenderer = new Section(createCard, elementsSelector);
 
 // создание экземпляров попапов, навешивание слушателей
 
@@ -91,7 +109,9 @@ const popupImage = new PopupWithImage(cardImagePopupSelector);
 popupImage.setEventListeners();
 
 const submitProfileFormHandler = (inputValues) => {
-  profileInfo.setUserInfo(inputValues);
+  api.editUserInfo(inputValues).then(res => {
+    profileInfo.setUserInfo(res);
+  });
   formProfilePopupValidation.disableSubmitButton();
 }
 
@@ -101,7 +121,9 @@ const popupFormProfile = new PopupWithForm(editPopupSelector, {
 popupFormProfile.setEventListeners();
 
 const submitNewCardFormHandler = (inputValues) => {
-  cardRenderer.addItem(createCard(inputValues));
+  api.addNewCard(inputValues).then(res => {
+    cardRenderer.addItem(createCard(res));
+  });
   formNewCardPopupValidation.disableSubmitButton();
 }
 
@@ -109,6 +131,14 @@ const popupFormNewCard = new PopupWithForm(addPopupSelector, {
   submitFormHandler: submitNewCardFormHandler
 });
 popupFormNewCard.setEventListeners();
+
+// const confirmRemovalHandler = (evt) => {
+
+// }
+
+// const popupConfirm = new PopupWithConfirmation(confirmPopupSelector, {
+//   confirmHandler: confirmRemovalHandler
+//});
 
 // открытие попапов редактирования профиля и создания новой карточки
 
