@@ -8,9 +8,9 @@ export default class Section {
     this._container.prepend(element);
   }
 
-  renderItems(data) {
+  renderItems(data, isUser) {
     data.forEach(item => {
-      this._container.append(this._renderer(item));
+      this._container.append(this._renderer(item, isUser));
     });
   }
 }

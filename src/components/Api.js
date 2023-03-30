@@ -57,17 +57,43 @@ export default class Api {
     }
   }
 
-  // async likeCard({ isLiked }) {
+  async removeCard(cardId) {
+    try {
+      const res = await fetch(`${this._baseUrl}/v1/cohort-63/cards/${cardId}`, {
+        method: 'DELETE',
+        headers: this._headers
+      })
+      const data = await res.json();
+      return data;
+    } catch (err) {
+      console.log(`Ой! Не удалось удалить карточку! Ошибка: ${err}`);
+    }
+  }
+
+  // async addLikeCard(userObj) {
   //   try {
-  //     const res = await fetch(`${this._baseUrl}/v1/cohort-63/cards`, {
-  //       method: 'PATCH',
+  //     const res = await fetch(`${this._baseUrl}/v1/cohort-63/cards/likes`, {
+  //       method: 'PUT',
   //       headers: this._headers,
-  //       body: JSON.stringify({ isLiked })
+  //       body: JSON.stringify(userObj)
   //     });
   //     const data = await res.json();
   //     return data;
   //   } catch (err) {
   //     console.log(`Ой! Не удалось добавить лайк на карточку! Ошибка: ${err}`);
+  //   }
+  // }
+
+  // async removeLikeCard() {
+  //   try {
+  //     const res = await fetch(`${this._baseUrl}/v1/cohort-63/cards/likes`, {
+  //       method: 'DELETE',
+  //       headers: this._headers,
+  //       body: 
+  //     });
+  //   } catch (err) {
+  //     console.log(`Ой! Не удалось убрать лайк с карточки! Ошибка: ${err}`);
+  //   }
   //   }
   // }
 }

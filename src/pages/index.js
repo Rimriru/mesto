@@ -78,13 +78,14 @@ const api = new Api({
   }
 });
 
-api.getUserInfo().then(res => {
-  profileInfo.setUserInfo(res);
-  profileAvatarImage.src = res.avatar;
-});
+api.getUserInfo().then(userObj => {
+  const userId = userObj._id;
+  profileInfo.setUserInfo(userObj);
+  profileAvatarImage.src = userObj.avatar;
 
-api.getInitialCards().then(cardsArray => {
-  cardRenderer.renderItems(cardsArray);
+  api.getInitialCards().then(cardsArray => {
+    cardRenderer.renderItems(cardsArray, userId);
+  });
 });
 
 // api.likeCard({isLiked: true}).then(res => {
@@ -93,12 +94,27 @@ api.getInitialCards().then(cardsArray => {
 
 // обработчик клика по карточке, создание карточки, добавление на на страницу
 
+const cardRemoveHandler = () => {
+  api.removeCard().then(res => {
+    console.log(res);
+  });
+}
+
+const popupConfirm = new PopupWithConfirmation(confirmPopupSelector, {
+  confirmHandler: cardRemoveHandler
+});
+popupConfirm.setEventListeners();
+
 const handleCardClick = ({name, link}) => {
   popupImage.open({name, link});
 }
 
-const createCard = (item) => {
-  return new Card(item, cardTemplateSelector, handleCardClick).createCard();
+const handleRemoveBtnClick = () => {
+  popupConfirm.open();
+}
+
+const createCard = (item, userId) => {
+  return new Card(item, cardTemplateSelector, handleCardClick, handleRemoveBtnClick, userId).createCard();
 }
 
 const cardRenderer = new Section(createCard, elementsSelector);
@@ -108,10 +124,29 @@ const cardRenderer = new Section(createCard, elementsSelector);
 const popupImage = new PopupWithImage(cardImagePopupSelector);
 popupImage.setEventListeners();
 
+// const submitUpdAvatarFormHandler = () => {
+  // api new method - change user avatar with patch request
+// }
+
+// const popupFormUpdAvatar = new PopupWithForm(updateAvatarPopupSelector, {
+//   submitFormHandler: submitUpdAvatarFormHandler
+// });
+// popupFormUpdAvatar.setEventListeners();
+
+// const changeSubmitButtonLoadingState = (evt, isLoading) => {
+//   return isLoading ? evt.submitter.textContent = 'Сохранение...' : evt.submitter.textContent = 'Сохранение';
+// }
+
 const submitProfileFormHandler = (inputValues) => {
   api.editUserInfo(inputValues).then(res => {
+    console.log(res);
+    // changeSubmitButtonLoadingState(evt, true);
     profileInfo.setUserInfo(res);
-  });
+  })
+  // .finally(
+  //   changeSubmitButtonLoadingState(evt, false)
+  // );
+  popupFormProfile.close();
   formProfilePopupValidation.disableSubmitButton();
 }
 
@@ -132,15 +167,11 @@ const popupFormNewCard = new PopupWithForm(addPopupSelector, {
 });
 popupFormNewCard.setEventListeners();
 
-// const confirmRemovalHandler = (evt) => {
-
-// }
-
-// const popupConfirm = new PopupWithConfirmation(confirmPopupSelector, {
-//   confirmHandler: confirmRemovalHandler
-//});
-
 // открытие попапов редактирования профиля и создания новой карточки
+
+changeAvatarBtn.addEventListener('click', () => {
+
+});
 
 editBtn.addEventListener('click', (evt) => {
   popupFormProfile.setInputValues(profileInfo.getUserInfo());
