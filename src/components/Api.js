@@ -9,10 +9,13 @@ export default class Api {
       const res = await fetch(`${this._baseUrl}/v1/cohort-63/users/me`, {
         headers: this._headers
       });
-      const data = await res.json();
-      return data;
+      if(res.ok) {
+        const data = await res.json();
+        return data;
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
     } catch (err) {
-      console.log(`Ой! Не удалось получить данные профиля! Ошибка: ${err}`);
+      console.log(`Ой! Не удалось получить данные профиля! ${err}`);
     }
     
   }
@@ -22,10 +25,13 @@ export default class Api {
       const res = await fetch(`${this._baseUrl}/v1/cohort-63/cards`, {
         headers: this._headers
       });
-      const data = await res.json();
-      return data;
+      if(res.ok) {
+        const data = await res.json();
+        return data;
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
     } catch (err) {
-      console.log(`Ой! Карточки не получены! Ошибка: ${err}`);
+      console.log(`Ой! Карточки не получены! ${err}`);
     }
   }
 
@@ -36,10 +42,13 @@ export default class Api {
         headers: this._headers,
         body: JSON.stringify({ name, about })
       });
-      const data = res.json();
-      return data;
+      if(res.ok) {
+        const data = await res.json();
+        return data;
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
     } catch (err) {
-      console.log(`Ой! Не удалось изменить данные профиля! Ошибка: ${err}`);
+      console.log(`Ой! Не удалось изменить данные профиля! ${err}`);
     }
   }
 
@@ -50,10 +59,13 @@ export default class Api {
         headers: this._headers,
         body: JSON.stringify({ name, link })
       });
-      const data = await res.json();
-      return data;
+      if(res.ok) {
+        const data = await res.json();
+        return data;
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
     } catch (err) {
-      console.log(`Ой! Не удалось добавить новую карточку! Ошибка: ${err}`);
+      console.log(`Ой! Не удалось добавить новую карточку! ${err}`);
     }
   }
 
@@ -63,10 +75,13 @@ export default class Api {
         method: 'DELETE',
         headers: this._headers
       })
-      const data = await res.json();
-      return data;
+      if(res.ok) {
+        const data = await res.json();
+        return data;
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
     } catch (err) {
-      console.log(`Ой! Не удалось удалить карточку! Ошибка: ${err}`);
+      console.log(`Ой! Не удалось удалить карточку! ${err}`);
     }
   }
 
