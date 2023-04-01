@@ -30,12 +30,13 @@ import {
   editPopupSelector,
   addPopupSelector,
   cardImagePopupSelector,
-  updateAvatarPopupSelector,
+  avatarPopupSelector,
   confirmPopupSelector,
-  profileAvatarImage,
+  profileAvatarSelector,
   profileNameSelector,
   profileDescriptionSelector,
   formProfilePopup,
+  formAvatarPopup,
   formNewCardPopup,
   cardTemplateSelector,
   elementsSelector,
@@ -53,12 +54,16 @@ import { FormValidator, formElementsClasses } from '../components/FormValidator.
 
 
 const formProfilePopupValidation = new FormValidator(formElementsClasses, formProfilePopup);
+const formAvatarPopupValidation = new FormValidator(formElementsClasses, formAvatarPopup);
 const formNewCardPopupValidation = new FormValidator(formElementsClasses, formNewCardPopup);
 
 function resetFormPopup(evt) {
-  if(evt.target === addBtn) {
+  if(evt.currentTarget === addBtn) {
     formNewCardPopup.reset();
     formNewCardPopupValidation.resetInputError();
+  } else if (evt.currentTarget === changeAvatarBtn) {
+    formAvatarPopup.reset();
+    formAvatarPopupValidation.resetInputError();
   } else {
     formProfilePopupValidation.resetInputError();
   }
@@ -66,7 +71,11 @@ function resetFormPopup(evt) {
 
 // сбор данных профиля пользователя
 
-const profileInfo = new UserInfo({nameSelector: profileNameSelector, descriptionSelector: profileDescriptionSelector});
+const profileInfo = new UserInfo({
+  nameSelector: profileNameSelector, 
+  descriptionSelector: profileDescriptionSelector,
+  avatarSelector: profileAvatarSelector
+});
 
 // создание экземпляра апи
 
@@ -85,11 +94,11 @@ const handleCardClick = ({name, link}) => {
   popupImage.open({name, link});
 }
 
-const handleRemoveBtnClick = (cardId, cardElement) => {
+const handleRemoveBtnClick = (card) => {
   popupConfirm.setConfirmHandler(() => {
-    api.removeCard(cardId)
+    api.removeCard(card._cardId)
     .then(() => {
-      cardElement.remove();
+      card._element.remove();
     })
     .catch((err) => {
       console.log(err);
@@ -98,8 +107,22 @@ const handleRemoveBtnClick = (cardId, cardElement) => {
   popupConfirm.open();
 }
 
+const likeCardHandler = (card) => {
+  api.addLikeCard(card._cardId)
+  .then((newCardObj) => {
+    card.updateLikesCounter(newCardObj.likes);
+  });
+}
+
+const removeLikeCardHandler = (card) => {
+  api.removeLikeCard(card._cardId)
+  .then((newCardObj) => {
+    card.updateLikesCounter(newCardObj.likes);
+  });
+}
+
 const createCard = (item, userId) => {
-  return new Card(item, cardTemplateSelector, handleCardClick, handleRemoveBtnClick, userId).createCard();
+  return new Card(item, cardTemplateSelector, handleCardClick, handleRemoveBtnClick, likeCardHandler, removeLikeCardHandler, userId).createCard();
 }
 
 const cardRenderer = new Section(createCard, elementsSelector);
@@ -132,13 +155,20 @@ const submitNewCardFormHandler = (inputValues) => {
   });
 }
 
-const submitAvatarChangeFormHandler = () => {
-  
+const submitAvatarChangeFormHandler = (inputValues) => {
+  popupFormAvatar.changeSubmitButtonState(true);
+  api.changeUserAvatar(inputValues).then(res => {
+    profileInfo.setUserAvatar(res.avatar);
+  })
+  .catch(err => console.log(err))
+  .finally(() => {
+    popupFormAvatar.changeSubmitButtonState(false);
+  })
 }
 
 const popupFormProfile = new PopupWithForm(editPopupSelector, submitProfileFormHandler);
+const popupFormAvatar = new PopupWithForm(avatarPopupSelector, submitAvatarChangeFormHandler);
 const popupFormNewCard = new PopupWithForm(addPopupSelector, submitNewCardFormHandler);
-const popupFormAvatarChange = new PopupWithForm(updateAvatarPopupSelector, submitAvatarChangeFormHandler);
 const popupConfirm = new PopupWithConfirmation(confirmPopupSelector);
 const popupImage = new PopupWithImage(cardImagePopupSelector);
 
@@ -147,7 +177,7 @@ api.getUserInfo()
   const userId = userObj._id;
   profileInfo.setUserId(userId);
   profileInfo.setUserInfo(userObj);
-  profileAvatarImage.src = userObj.avatar;
+  profileInfo.setUserAvatar(userObj.avatar);
 
   api.getInitialCards()
   .then(cardsArray => {
@@ -158,36 +188,24 @@ api.getUserInfo()
 .catch((err) => console.log(err))
 .finally(() => {
   popupFormProfile.setEventListeners();
+  popupFormAvatar.setEventListeners();
   popupFormNewCard.setEventListeners();
-  popupFormAvatarChange.setEventListeners();
   popupImage.setEventListeners();
   popupConfirm.setEventListeners();
   formProfilePopupValidation.enableValidation();
+  formAvatarPopupValidation.enableValidation();
   formNewCardPopupValidation.enableValidation();
 })
 
-
-// создание экземпляров попапов, навешивание слушателей
-
-// const submitUpdAvatarFormHandler = () => {
-  // api new method - change user avatar with patch request
-// }
-
-// const popupFormUpdAvatar = new PopupWithForm(updateAvatarPopupSelector, {
-//   submitFormHandler: submitUpdAvatarFormHandler
-// });
-// popupFormUpdAvatar.setEventListeners();
-
-// открытие попапов редактирования профиля и создания новой карточки
-
-changeAvatarBtn.addEventListener('click', () => {
-
+changeAvatarBtn.addEventListener('click', (evt) => {
+  resetFormPopup(evt);
+  popupFormAvatar.open();
 });
 
 editBtn.addEventListener('click', (evt) => {
+  resetFormPopup(evt);
   popupFormProfile.setInputValues(profileInfo.getUserInfo());
   popupFormProfile.open();
-  resetFormPopup(evt);
 });
 
 addBtn.addEventListener('click', (evt) => {

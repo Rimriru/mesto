@@ -52,6 +52,23 @@ export default class Api {
     }
   }
 
+  async changeUserAvatar(avatar) {
+    try {
+      const res = await fetch(`${this._baseUrl}/v1/cohort-63/users/me/avatar`, {
+        method: 'PATCH',
+        headers: this._headers,
+        body: JSON.stringify(avatar)
+      });
+      if(res.ok) {
+        const data = await res.json();
+        return data
+      }
+      Promise.reject(`Ошибка: ${res.status}`);
+    } catch (err) {
+      console.log(`Ой! Не удалось изменить аватар профиля! ${err}`);
+    }
+  }
+
   async addNewCard({ name, link }) {
     try {
       const res = await fetch(`${this._baseUrl}/v1/cohort-63/cards`, {
@@ -85,30 +102,34 @@ export default class Api {
     }
   }
 
-  // async addLikeCard(userObj) {
-  //   try {
-  //     const res = await fetch(`${this._baseUrl}/v1/cohort-63/cards/likes`, {
-  //       method: 'PUT',
-  //       headers: this._headers,
-  //       body: JSON.stringify(userObj)
-  //     });
-  //     const data = await res.json();
-  //     return data;
-  //   } catch (err) {
-  //     console.log(`Ой! Не удалось добавить лайк на карточку! Ошибка: ${err}`);
-  //   }
-  // }
+  async addLikeCard(cardId) {
+    try {
+      const res = await fetch(`${this._baseUrl}/v1/cohort-63/cards/${cardId}/likes`, {
+        method: 'PUT',
+        headers: this._headers
+      });
+      if(res.ok) {
+        const data = await res.json();
+        return data;
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    } catch (err) {
+      console.log(`Ой! Не удалось добавить лайк на карточку! ${err}`);
+    }
+  }
 
-  // async removeLikeCard() {
-  //   try {
-  //     const res = await fetch(`${this._baseUrl}/v1/cohort-63/cards/likes`, {
-  //       method: 'DELETE',
-  //       headers: this._headers,
-  //       body: 
-  //     });
-  //   } catch (err) {
-  //     console.log(`Ой! Не удалось убрать лайк с карточки! Ошибка: ${err}`);
-  //   }
-  //   }
-  // }
-}
+  async removeLikeCard(cardId) {
+    try {
+      const res = await fetch(`${this._baseUrl}/v1/cohort-63/cards/${cardId}/likes`, {
+        method: 'DELETE',
+        headers: this._headers
+      });
+      if(res.ok) {
+        const data = await res.json();
+        return data;
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    } catch (err) {
+      console.log(`Ой! Не удалось убрать лайк с карточки! Ошибка: ${err}`);}
+    }
+  }
