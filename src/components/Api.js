@@ -63,7 +63,7 @@ export default class Api {
         const data = await res.json();
         return data
       }
-      Promise.reject(`Ошибка: ${res.status}`);
+      return Promise.reject(`Ошибка: ${res.status}`);
     } catch (err) {
       console.log(`Ой! Не удалось изменить аватар профиля! ${err}`);
     }
