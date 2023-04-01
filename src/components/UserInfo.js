@@ -5,7 +5,7 @@ export default class UserInfo {
     this._avatarSelector = avatarSelector;
     this._name = document.querySelector(this._nameSelector);
     this._description = document.querySelector(this._descriptionSelector);
-    this._avatarSelector = document.querySelector(this._avatarSelector);
+    this._avatar = document.querySelector(this._avatarSelector);
   }
 
   getUserInfo() {
@@ -17,8 +17,8 @@ export default class UserInfo {
     this._description.textContent = about;
   }
 
-  setUserAvatar(avatar) {
-    this._avatarSelector.src = avatar;
+  setUserAvatar(link) {
+    this._avatar.src = link;
   }
 
   setUserId(userId) {

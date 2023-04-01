@@ -174,14 +174,13 @@ const popupImage = new PopupWithImage(cardImagePopupSelector);
 
 api.getUserInfo()
 .then(userObj => {
-  const userId = userObj._id;
-  profileInfo.setUserId(userId);
+  const {avatar, _id} = userObj;
+  profileInfo.setUserId(_id);
   profileInfo.setUserInfo(userObj);
-  profileInfo.setUserAvatar(userObj.avatar);
-
+  profileInfo.setUserAvatar(avatar);
   api.getInitialCards()
   .then(cardsArray => {
-    cardRenderer.renderItems(cardsArray, userId);
+    cardRenderer.renderItems(cardsArray, _id);
   })
   .catch((err) => console.log(err));
 })
