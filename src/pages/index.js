@@ -52,7 +52,6 @@ import { FormValidator, formElementsClasses } from '../components/FormValidator.
 
 // cоздание экземпляров форм, проверка на валидность, очистка ошибок
 
-
 const formProfilePopupValidation = new FormValidator(formElementsClasses, formProfilePopup);
 const formAvatarPopupValidation = new FormValidator(formElementsClasses, formAvatarPopup);
 const formNewCardPopupValidation = new FormValidator(formElementsClasses, formNewCardPopup);
@@ -87,8 +86,7 @@ const api = new Api({
   }
 });
 
-// создание экземпляров форм
-
+// создание карточки
 
 const handleCardClick = ({name, link}) => {
   popupImage.open({name, link});
@@ -126,6 +124,8 @@ const createCard = (item, userId) => {
 }
 
 const cardRenderer = new Section(createCard, elementsSelector);
+
+// создание экземпляров попапов
 
 const submitProfileFormHandler = (inputValues) => {
   popupFormProfile.changeSubmitButtonState(true);
@@ -172,29 +172,33 @@ const popupFormNewCard = new PopupWithForm(addPopupSelector, submitNewCardFormHa
 const popupConfirm = new PopupWithConfirmation(confirmPopupSelector);
 const popupImage = new PopupWithImage(cardImagePopupSelector);
 
-api.getUserInfo()
-.then(userObj => {
+// первичный запрос с наполнением страницы и запуском
+
+Promise.all([api.getUserInfo(), api.getInitialCards()])
+.then(res => {
+  const userObj = res[0];
+  const cardsArray = res[1];
+
   const {avatar, _id} = userObj;
   profileInfo.setUserId(_id);
   profileInfo.setUserInfo(userObj);
   profileInfo.setUserAvatar(avatar);
-  api.getInitialCards()
-  .then(cardsArray => {
-    cardRenderer.renderItems(cardsArray, _id);
-  })
-  .catch((err) => console.log(err));
+
+  cardRenderer.renderItems(cardsArray, _id);
 })
-.catch((err) => console.log(err))
+.catch(err => console.log(`Ошибка: ${err}`))
 .finally(() => {
-  popupFormProfile.setEventListeners();
-  popupFormAvatar.setEventListeners();
-  popupFormNewCard.setEventListeners();
-  popupImage.setEventListeners();
-  popupConfirm.setEventListeners();
-  formProfilePopupValidation.enableValidation();
-  formAvatarPopupValidation.enableValidation();
-  formNewCardPopupValidation.enableValidation();
-})
+    popupFormProfile.setEventListeners();
+    popupFormAvatar.setEventListeners();
+    popupFormNewCard.setEventListeners();
+    popupImage.setEventListeners();
+    popupConfirm.setEventListeners();
+    formProfilePopupValidation.enableValidation();
+    formAvatarPopupValidation.enableValidation();
+    formNewCardPopupValidation.enableValidation();
+  });
+
+// открытие попапов
 
 changeAvatarBtn.addEventListener('click', (evt) => {
   resetFormPopup(evt);
