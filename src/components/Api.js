@@ -17,7 +17,6 @@ export default class Api {
     } catch (err) {
       console.log(`Ой! Не удалось получить данные профиля! ${err}`);
     }
-    
   }
 
   async getInitialCards() {

@@ -1,5 +1,5 @@
 const logo = new URL('../images/logo/logo-mesto.svg', import.meta.url);
-const avatar = new URL('../images/avatar.jpg', import.meta.url);
+const defaultAvatar = new URL('../images/default-avatar.png', import.meta.url);
 const avatarChangeIcon = new URL('../images/avatar-icon.svg', import.meta.url);
 const editBtnImage = new URL('../images/edit-button.svg', import.meta.url);
 const addBtnImage = new URL('../images/add-button.svg', import.meta.url);
@@ -11,7 +11,7 @@ const removeButtonImage = new URL('../images/remove-card-button.svg', import.met
 
 const images = [
   { name: 'logo', image: logo },
-  { name: 'avatar', image: avatar },
+  { name: 'defaultAvatar', image: defaultAvatar },
   { name: 'avatarChangeIcon', image: avatarChangeIcon },
   { name: 'editBtn', image: editBtnImage },
   { name: 'addBtn', image: addBtnImage },
@@ -172,7 +172,7 @@ const popupFormNewCard = new PopupWithForm(addPopupSelector, submitNewCardFormHa
 const popupConfirm = new PopupWithConfirmation(confirmPopupSelector);
 const popupImage = new PopupWithImage(cardImagePopupSelector);
 
-// первичный запрос с наполнением страницы и запуском
+// первичный запрос с наполнением страницы и запуском слушателей и валидации
 
 Promise.all([api.getUserInfo(), api.getInitialCards()])
 .then(res => {
@@ -215,4 +215,3 @@ addBtn.addEventListener('click', (evt) => {
   resetFormPopup(evt);
   popupFormNewCard.open();
 });
-
