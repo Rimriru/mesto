@@ -1,37 +1,13 @@
-const logo = new URL('../images/logo/logo-mesto.svg', import.meta.url);
-const defaultAvatar = new URL('../images/default-avatar.png', import.meta.url);
-const avatarChangeIcon = new URL('../images/avatar-icon.svg', import.meta.url);
-const editBtnImage = new URL('../images/edit-button.svg', import.meta.url);
-const addBtnImage = new URL('../images/add-button.svg', import.meta.url);
-const addBtnImageLarge = new URL('../images/add-button-large.svg', import.meta.url);
-const closeBtnImage = new URL('../images/close-button.svg', import.meta.url);
-const likeBtnImage = new URL('../images/like-button.svg', import.meta.url);
-const likeBtnImageActive = new URL('../images/like-button_active.svg', import.meta.url);
-const removeButtonImage = new URL('../images/remove-card-button.svg', import.meta.url);
-
-const images = [
-  { name: 'logo', image: logo },
-  { name: 'defaultAvatar', image: defaultAvatar },
-  { name: 'avatarChangeIcon', image: avatarChangeIcon },
-  { name: 'editBtn', image: editBtnImage },
-  { name: 'addBtn', image: addBtnImage },
-  { name: 'addBtnLarge', image: addBtnImageLarge },
-  { name: 'closeBtn', image: closeBtnImage },
-  { name: 'likeBtn', image: likeBtnImage },
-  { name: 'likeBtnActive', image: likeBtnImageActive },
-  { name: 'removeButton', image: removeButtonImage },
-];
-
 import './index.css'
 import {
   changeAvatarBtn,
   editBtn,
   addBtn,
-  editPopupSelector,
-  addPopupSelector,
-  cardImagePopupSelector,
-  avatarPopupSelector,
-  confirmPopupSelector,
+  selectorPopupProfile,
+  selectorPopupNewCard,
+  selectorPopupCardImage,
+  selectorPopupAvatar,
+  selectorPopupConfirm,
   profileAvatarSelector,
   profileNameSelector,
   profileDescriptionSelector,
@@ -96,7 +72,7 @@ const handleRemoveBtnClick = (card) => {
   popupConfirm.setConfirmHandler(() => {
     api.removeCard(card._cardId)
     .then(() => {
-      card._element.remove();
+      card.removeCardElement();
     })
     .catch((err) => {
       console.log(err);
@@ -105,21 +81,28 @@ const handleRemoveBtnClick = (card) => {
   popupConfirm.open();
 }
 
-const likeCardHandler = (card) => {
+const likeCardHandler = (evt, card) => {
   api.addLikeCard(card._cardId)
   .then((newCardObj) => {
+    evt.target.classList.add(card.likeBtnActive);
     card.updateLikesCounter(newCardObj.likes);
-  });
+  })
+  .catch((err) => {
+    console.log(err);
+  })
 }
 
-const removeLikeCardHandler = (card) => {
+const removeLikeCardHandler = (evt, card) => {
   api.removeLikeCard(card._cardId)
   .then((newCardObj) => {
+    evt.target.classList.remove(card.likeBtnActive);
     card.updateLikesCounter(newCardObj.likes);
-  });
+  })
+  .catch(err => console.log(err))
 }
 
-const createCard = (item, userId) => {
+const createCard = (item) => {
+  const userId = profileInfo.getUserId();
   return new Card(item, cardTemplateSelector, handleCardClick, handleRemoveBtnClick, likeCardHandler, removeLikeCardHandler, userId).createCard();
 }
 
@@ -131,34 +114,35 @@ const submitProfileFormHandler = (inputValues) => {
   popupFormProfile.changeSubmitButtonState(true);
   api.editUserInfo(inputValues).then(res => {
     profileInfo.setUserInfo(res);
+    popupFormProfile.close();
+    formProfilePopupValidation.disableSubmitButton();
   })
   .catch(err => {
     console.log(err)
   })
   .finally(() => {
     popupFormProfile.changeSubmitButtonState(false);
-    popupFormProfile.close();
-    formProfilePopupValidation.disableSubmitButton();
   });
 }
 
 const submitNewCardFormHandler = (inputValues) => {
   api.addNewCard(inputValues)
   .then(res => {
-    cardRenderer.addItem(createCard(res, profileInfo.getUserId()));
+    cardRenderer.addItem(createCard(res));
+    popupFormNewCard.close();
+    formNewCardPopupValidation.disableSubmitButton();
   })
   .catch((err) => {
     console.log(err);
   })
-  .finally(() => {
-    formNewCardPopupValidation.disableSubmitButton();
-  });
 }
 
 const submitAvatarChangeFormHandler = (inputValues) => {
   popupFormAvatar.changeSubmitButtonState(true);
   api.changeUserAvatar(inputValues).then(res => {
     profileInfo.setUserAvatar(res.avatar);
+    popupFormAvatar.close();
+    formAvatarPopupValidation.disableSubmitButton();
   })
   .catch(err => console.log(err))
   .finally(() => {
@@ -166,11 +150,11 @@ const submitAvatarChangeFormHandler = (inputValues) => {
   })
 }
 
-const popupFormProfile = new PopupWithForm(editPopupSelector, submitProfileFormHandler);
-const popupFormAvatar = new PopupWithForm(avatarPopupSelector, submitAvatarChangeFormHandler);
-const popupFormNewCard = new PopupWithForm(addPopupSelector, submitNewCardFormHandler);
-const popupConfirm = new PopupWithConfirmation(confirmPopupSelector);
-const popupImage = new PopupWithImage(cardImagePopupSelector);
+const popupFormProfile = new PopupWithForm(selectorPopupProfile, submitProfileFormHandler);
+const popupFormAvatar = new PopupWithForm(selectorPopupAvatar, submitAvatarChangeFormHandler);
+const popupFormNewCard = new PopupWithForm(selectorPopupNewCard, submitNewCardFormHandler);
+const popupConfirm = new PopupWithConfirmation(selectorPopupConfirm);
+const popupImage = new PopupWithImage(selectorPopupCardImage);
 
 // первичный запрос с наполнением страницы и запуском слушателей и валидации
 
@@ -184,7 +168,7 @@ Promise.all([api.getUserInfo(), api.getInitialCards()])
   profileInfo.setUserInfo(userObj);
   profileInfo.setUserAvatar(avatar);
 
-  cardRenderer.renderItems(cardsArray, _id);
+  cardRenderer.renderItems(cardsArray);
 })
 .catch(err => console.log(`Ошибка: ${err}`))
 .finally(() => {
@@ -215,3 +199,4 @@ addBtn.addEventListener('click', (evt) => {
   resetFormPopup(evt);
   popupFormNewCard.open();
 });
+
