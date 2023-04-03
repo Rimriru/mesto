@@ -73,6 +73,7 @@ const handleRemoveBtnClick = (card) => {
     api.removeCard(card._cardId)
     .then(() => {
       card.removeCardElement();
+      popupConfirm.close();
     })
     .catch((err) => {
       console.log(err);
@@ -81,10 +82,10 @@ const handleRemoveBtnClick = (card) => {
   popupConfirm.open();
 }
 
-const likeCardHandler = (evt, card) => {
+const likeCardHandler = (card) => {
   api.addLikeCard(card._cardId)
   .then((newCardObj) => {
-    evt.target.classList.add(card.likeBtnActive);
+    card.changeLikeButtonState();
     card.updateLikesCounter(newCardObj.likes);
   })
   .catch((err) => {
@@ -92,10 +93,10 @@ const likeCardHandler = (evt, card) => {
   })
 }
 
-const removeLikeCardHandler = (evt, card) => {
+const removeLikeCardHandler = (card) => {
   api.removeLikeCard(card._cardId)
   .then((newCardObj) => {
-    evt.target.classList.remove(card.likeBtnActive);
+    card.changeLikeButtonState();
     card.updateLikesCounter(newCardObj.likes);
   })
   .catch(err => console.log(err))

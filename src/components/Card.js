@@ -24,7 +24,7 @@ export default class Card {
     this._likesCounter = this._element.querySelector('.element__likes-counter');
     this._likeBtn = this._element.querySelector('.element__like-button');
 
-    this.likeBtnActive = 'element__like-button_active';
+    this._likeBtnActive = 'element__like-button_active';
   }
 
   _getTemplate() {
@@ -36,9 +36,9 @@ export default class Card {
     this._imageCard.addEventListener('click', () => {
       this._handleCardClick( {name: this._name, link: this._link} );
     });
-    this._likeBtn.addEventListener('click', (evt) => {
-      return evt.currentTarget.classList.contains(this.likeBtnActive) ?
-        this._removeLikeCardHandler(evt, this) : this._likeCardHandler(evt, this)
+    this._likeBtn.addEventListener('click', () => {
+      return this._likeBtn.classList.contains(this._likeBtnActive) ?
+        this._removeLikeCardHandler(this) : this._likeCardHandler(this)
     });
     this._removeBtn.addEventListener('click', () => {
       this._handleRemoveBtnClick(this);
@@ -47,6 +47,10 @@ export default class Card {
 
   updateLikesCounter(likes) {
     this._likesCounter.textContent = likes.length;
+  }
+
+  changeLikeButtonState() {
+    this._likeBtn.classList.toggle(this._likeBtnActive);
   }
 
   _isLikedByUser() {
